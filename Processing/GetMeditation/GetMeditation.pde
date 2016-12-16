@@ -3,9 +3,10 @@ import pt.citar.diablu.processing.mindset.*;
 
 MindSet player1;
 int meditationLevel;
-int threshold = 60;
+int threshold = 50;
 
 float signalStrength;
+Serial myPort;
 
 void setup() {
  
@@ -14,20 +15,27 @@ void setup() {
   String portName = Serial.list()[3];
   myPort = new Serial(this, portName, 9600);
   
-  size(512, 512);
+  size(displayWidth, displayHeight);
   player1 = new MindSet(this, "/dev/cu.MindWaveMobile-DevA");
+  
+  textSize(64);
 }
 
 void draw() {
-  background(0);
+ 
   println("Meditation      = " +meditationLevel);
   println("Signal Strength = " + signalStrength);
   
   if(meditationLevel > threshold){
-    myPort.write(1);
+    myPort.write('0'); 
+    background(255);
+    fill(0);
   } else {  
-    myPort.write(0); 
+    background(0);
+    fill(255);
+    myPort.write('1'); 
   }
+  text(meditationLevel, width/2, height/2);
 }
 
 
